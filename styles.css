@@ -861,3 +861,15 @@ main {
     line-height: 1.74;
   }
 }
+
+.chapter-section {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.chapter-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
