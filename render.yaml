@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: sola-galaxy
+    runtime: python
+    buildCommand: ""
+    startCommand: python server.py
+    envVars:
+      - key: DATABASE_PATH
+        value: /var/data/sola_feedback.db
+    disk:
+      name: sola-galaxy-data
+      mountPath: /var/data
+      sizeGB: 1
