@@ -1,51 +1,68 @@
-# Sola Galaxy website
+# The Grand Conquest of the Sola Galaxy
 
-This version includes a shared SQLite database for chapter likes, dislikes, and comments.
+This version is built for GitHub Pages. All website files are static HTML, CSS, and JavaScript. Shared likes, dislikes, and comments are stored in Supabase, so they work for every visitor even though GitHub Pages cannot run Python or SQLite.
 
-## Run locally on Windows
+## 1. Create the shared feedback database
 
-Open Command Prompt in this folder and run:
+1. Create a Supabase project.
+2. Open **SQL Editor** in the Supabase dashboard.
+3. Paste and run the entire contents of `supabase-schema.sql`.
+4. Open **Authentication > Providers > Anonymous Sign-Ins** and enable anonymous sign-ins.
+5. Open **Project Settings > API**.
+6. Copy the Project URL and the Publishable key. A legacy anon key also works.
+7. Open `feedback-config.js` and replace the two placeholder values.
+
+Example:
+
+```js
+window.SOLA_FEEDBACK_CONFIG = {
+  supabaseUrl: 'https://abc123.supabase.co',
+  supabasePublishableKey: 'sb_publishable_your_key_here'
+};
+```
+
+The publishable or anon key is designed for browser use. Never put a Supabase secret key or service-role key in this repository.
+
+## 2. Test locally
+
+Because the feedback code is an ES module, test through a local server rather than opening the HTML file directly.
 
 ```cmd
-py server.py
+py -m http.server 8000
 ```
 
 Then open:
 
 ```text
-http://localhost:8000
+http://localhost:8000/tiberius.html
 ```
 
-Do not open `index.html` directly and do not use `python -m http.server`. Those methods serve only static files and cannot run the feedback database API.
+The Python command is only serving static files. The comments database is Supabase, not Python.
 
-The database is created automatically at:
+## 3. Publish with GitHub Pages
 
-```text
-data/sola_feedback.db
-```
+Push the folder contents to the `main` branch of the repository.
 
-All visitors who connect to the same running server share the same likes, dislikes, and comments.
+In GitHub:
 
-## Pages
+1. Open **Settings > Pages**.
+2. Under **Build and deployment**, choose **Deploy from a branch**.
+3. Select `main` and `/ (root)`.
+4. Save.
 
-- `/` or `/index.html`: About Me
-- `/book1.html`: Book 1 and character gallery
-- `/tiberius.html`: Tiberius chapters, right-side chapter navigation, and shared feedback
+The site will load the shared feedback directly from Supabase. No `server.py`, Render service, or SQLite database is required.
 
-## Put the site online
+## Feedback behavior
 
-A static host such as GitHub Pages cannot run this database. Deploy the complete folder to a host that runs Python, such as Render, Railway, Fly.io, or a VPS.
+- Every browser receives an anonymous Supabase account automatically.
+- Each anonymous account can have one Like or Dislike per chapter.
+- Selecting the same reaction again removes it.
+- Comments and reaction totals are shared between all visitors.
+- The page refreshes the displayed data after a successful reaction or comment.
+- Comments are displayed using text-only DOM APIs to prevent submitted HTML from being rendered.
 
-A `render.yaml` file is included. On Render, create a Blueprint from the repository and keep the included persistent disk. The disk stores `sola_feedback.db` so comments and reactions survive redeployments.
+## Files used for feedback
 
-If the domain currently points to GitHub Pages, update its DNS after the Python service is deployed.
-
-## Backups
-
-Back up the following file regularly:
-
-```text
-data/sola_feedback.db
-```
-
-When hosted with the included Render configuration, the database path is `/var/data/sola_feedback.db`.
+- `feedback-config.js`: Supabase project URL and browser-safe publishable key
+- `feedback.js`: browser feedback logic
+- `supabase-schema.sql`: tables, permissions, and row-level security policies
