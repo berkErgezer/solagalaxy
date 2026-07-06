@@ -66,3 +66,14 @@ The site will load the shared feedback directly from Supabase. No `server.py`, R
 - `feedback-config.js`: Supabase project URL and browser-safe publishable key
 - `feedback.js`: browser feedback logic
 - `supabase-schema.sql`: tables, permissions, and row-level security policies
+
+## Arifin reader
+
+`arifin.html` contains the supplied Arifin chapter and artwork. The Arifin card on
+`book1.html` now opens this reader page. Its reactions and comments use the
+chapter ID `arifin-rensa-korlin`.
+
+Run the current `supabase-schema.sql` again in the Supabase SQL Editor before
+publishing this update. It removes the old fixed chapter allowlist so Arifin and
+future character chapters can use shared feedback.
+

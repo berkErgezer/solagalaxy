@@ -1217,3 +1217,60 @@ main {
     align-items: center;
   }
 }
+
+/* Character portrait reader hero */
+.reader-hero-profile {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 340px);
+  align-items: center;
+  gap: clamp(24px, 5vw, 64px);
+}
+
+.reader-hero-copy,
+.reader-character-figure {
+  position: relative;
+  z-index: 2;
+}
+
+.reader-character-figure {
+  margin: 0;
+}
+
+.reader-character-portrait {
+  display: block;
+  width: 100%;
+  max-height: 390px;
+  aspect-ratio: 4 / 4.8;
+  object-fit: cover;
+  object-position: center top;
+  border: 1px solid rgba(139, 204, 245, 0.38);
+  border-radius: 22px;
+  background: #f4f2ee;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.38),
+    0 0 34px rgba(86, 183, 255, 0.13);
+}
+
+.reader-character-figure figcaption {
+  margin-top: 10px;
+  color: #aac9db;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .reader-hero-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .reader-character-figure {
+    width: min(100%, 360px);
+  }
+
+  .reader-character-portrait {
+    max-height: 440px;
+  }
+}
+
